@@ -104,6 +104,7 @@ class FixtureFactory
         
         if ($this->persist) {
             $this->em->persist($ent);
+            $this->em->flush();
         }
         
         return $ent;
