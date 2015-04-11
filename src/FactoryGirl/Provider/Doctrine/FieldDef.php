@@ -60,4 +60,32 @@ class FieldDef
             return $factory->get($name);
         };
     }
+
+    /**
+     * Returns an entity from custom Jobzippers lists
+     *
+     * @param $repository
+     * @param $id
+     * @return callable
+     */
+    public static function lists($repository, $id)
+    {
+        return function(FixtureFactory $factory) use ($repository, $id) {
+            return $factory->getEntityManager()->getRepository($repository)->find($id);
+        };
+    }
+
+    /**
+     * Returns a custom value from the faker library
+     *
+     * @param $funcOrString
+     * @return callable
+     */
+    public static function faker($funcOrString, ...$params)
+    {
+        return function(FixtureFactory $factory) use ($funcOrString, $params){
+            return call_user_func_array(array($factory->getFaker(), $funcOrString), $params);
+        };
+    }
+
 }

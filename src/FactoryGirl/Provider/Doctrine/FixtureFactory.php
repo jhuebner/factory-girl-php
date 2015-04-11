@@ -4,7 +4,8 @@ namespace FactoryGirl\Provider\Doctrine;
 use Doctrine\ORM\EntityManager,
     Doctrine\Common\Collections\Collection,
     Doctrine\Common\Collections\ArrayCollection,
-    Exception;
+    Exception,
+    \Faker\Generator as Faker;
 
 /**
  * Creates Doctrine entities for use in tests.
@@ -17,6 +18,11 @@ class FixtureFactory
      * @var EntityManager
      */
     protected $em;
+
+    /**
+     * @var Faker
+     */
+    protected $faker;
     
     /**
      * @var string
@@ -64,7 +70,21 @@ class FixtureFactory
     {
         return $this->entityNamespace;
     }
-    
+
+    public function getEntityManager()
+    {
+        return $this->em;
+    }
+
+    public function setFaker(Faker $faker)
+    {
+        $this->faker = $faker;
+    }
+
+    public function getFaker()
+    {
+        return $this->faker;
+    }
     
     /**
      * Get an entity and its dependencies.
