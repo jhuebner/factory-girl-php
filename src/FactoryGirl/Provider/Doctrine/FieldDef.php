@@ -79,6 +79,7 @@ class FieldDef
      * Returns a custom value from the faker library
      *
      * @param $funcOrString
+     * @param $params
      * @return callable
      */
     public static function faker($funcOrString, ...$params)
