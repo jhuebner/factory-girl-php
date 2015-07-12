@@ -9,16 +9,16 @@ class FieldDef
 {
     /**
      * Defines a field to be a string based on an incrementing integer.
-     * 
+     *
      * This is typically used to generate unique names such as usernames.
-     * 
+     *
      * The parameter may be a function that receives a counter value
      * each time the entity is created or it may be a string.
-     * 
+     *
      * If the parameter is a string string containing "%d" then it will be
      * replaced by the counter value. If the string does not contain "%d"
      * then the number is simply appended to the parameter.
-     * 
+     *
      * @param callable|string $funcOrString The function or pattern to generate a value from.
      * @param int $firstNum The first number to use.
      * @return callable
@@ -43,14 +43,14 @@ class FieldDef
             };
         }
     }
-    
+
     /**
      * Defines a field to `get()` a named entity from the factory.
-     * 
+     *
      * The normal semantics of `get()` apply.
      * Normally this means that the field gets a fresh instance of the named
      * entity. If a singleton has been defined, `get()` will return that.
-     * 
+     *
      * @param string $name The name of the entity to get.
      * @return callable
      */
@@ -70,6 +70,8 @@ class FieldDef
      */
     public static function lists($repository, $id)
     {
+        $repository = 'Entities\\' . $repository;
+
         return function(FixtureFactory $factory) use ($repository, $id) {
             return $factory->getEntityManager()->getRepository($repository)->find($id);
         };
@@ -89,4 +91,21 @@ class FieldDef
         };
     }
 
+    /**
+     * Returns a custom value from the faker library or NULL
+     *
+     * @param $funcOrString
+     * @param ...$params
+     * @return callable
+     */
+    public static function fakerOrNull($funcOrString, ...$params)
+    {
+        $nullProbability = 0.3;
+
+        if(rand(0, 100) <= $nullProbability*100) return null;
+
+        return function(FixtureFactory $factory) use ($funcOrString, $params){
+            return call_user_func_array(array($factory->getFaker(), $funcOrString), $params);
+        };
+    }
 }
