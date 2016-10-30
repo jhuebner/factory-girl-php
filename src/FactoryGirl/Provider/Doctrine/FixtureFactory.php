@@ -168,10 +168,6 @@ class FixtureFactory
         if ($metadata->isCollectionValuedAssociation($fieldName)) {
             $metadata->setFieldValue($ent, $fieldName, $this->createCollectionFrom($fieldValue));
         } else {
-            if (is_array($fieldValue) && $metadata->isSingleValuedAssociation($fieldName)) {
-                // Jobzippers mod for users.properties.employer
-                return true;
-            }
             $metadata->setFieldValue($ent, $fieldName, $fieldValue);
 
             if (is_object($fieldValue) && $metadata->isSingleValuedAssociation($fieldName)) {

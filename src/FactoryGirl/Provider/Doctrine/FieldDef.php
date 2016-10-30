@@ -44,6 +44,16 @@ class FieldDef
         }
     }
 
+    public static function past()
+    {
+        return new DateIntervalHelper(new \DateTime(), true);
+    }
+
+    public static function future()
+    {
+        return new DateIntervalHelper(new \DateTime(), false);
+    }
+    
     /**
      * Defines a field to `get()` a named entity from the factory.
      *
@@ -58,22 +68,6 @@ class FieldDef
     {
         return function(FixtureFactory $factory) use ($name) {
             return $factory->get($name);
-        };
-    }
-
-    /**
-     * Returns an entity from custom Jobzippers lists
-     *
-     * @param $repository
-     * @param $id
-     * @return callable
-     */
-    public static function lists($repository, $id)
-    {
-        $repository = 'Entities\\' . $repository;
-
-        return function(FixtureFactory $factory) use ($repository, $id) {
-            return $factory->getEntityManager()->getRepository($repository)->find($id);
         };
     }
 
